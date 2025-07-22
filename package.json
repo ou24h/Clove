@@ -1,0 +1,21 @@
+{
+  "name": "clove",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "@discordjs/voice": "^0.18.0",
+    "ascii-table": "^0.0.9",
+    "discord.js": "^14.21.0",
+    "dotenv": "^17.2.0",
+    "fs": "^0.0.1-security",
+    "ytdl-core": "^4.11.5"
+  }
+}
