@@ -1,4 +1,5 @@
 import { verifyKey } from 'discord-interactions';
+import getRawBody from 'raw-body';
 
 export const config = {
   api: {
@@ -13,19 +14,30 @@ export default async function handler(req, res) {
 
   const signature = req.headers['x-signature-ed25519'];
   const timestamp = req.headers['x-signature-timestamp'];
-  const rawBody = await getRawBody(req); // تحتاج مكتبة raw-body
 
+  const rawBody = await getRawBody(req);
   const isValid = verifyKey(rawBody, signature, timestamp, process.env.PUBLIC_KEY);
 
   if (!isValid) {
-    return res.status(401).send('Invalid signature');
+    return res.status(401).send('Bad signature');
   }
 
-  const json = JSON.parse(rawBody);
+  const body = JSON.parse(rawBody);
 
-  if (json.type === 1) {
-    return res.status(200).json({ type: 1 }); // PONG
+  // 📡 Discord Ping Check
+  if (body.type === 1) {
+    return res.status(200).json({ type: 1 });
   }
 
-  // رد فعل أو أمر Slash
+  // 📝 Handle Slash Command `/ping`
+  if (body.type === 2 && body.data.name === 'ping') {
+    return res.status(200).json({
+      type: 4,
+      data: {
+        content: '🏓 Pong! البوت شغّال في Vercel 🎉',
+      },
+    });
+  }
+
+  // 📌 Add more commands here if needed
 }
